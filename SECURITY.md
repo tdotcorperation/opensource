@@ -7,10 +7,12 @@ currently being supported with security updates.
 
 | CODE    | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| T.Pass   | :white_check_mark: |
+| acs all   | ✅:                |
+| my page   | :white_check_mark: |
+| nrpp all   | ✅:                |
+| info   | ✅:                |
+| qrbq   | ✅:                |
 
 ## Reporting a Vulnerability
 
