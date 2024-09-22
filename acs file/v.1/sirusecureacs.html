@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SiRU Secure acs</title>
+  <title>EXAMPLE Secure acs</title>
   <style>
     h1 {
       font-size: 40pt;
@@ -17,7 +17,7 @@
   </style>
 </head>
 <body>
-  <h1>SiRU Secure Access Key Authentication System</h1>
+  <h1>EXAMPLE Secure Access Key Authentication System</h1>
   <div>
     <input type="text" id="accessKey">
     <button onclick="checkAccess()">Access</button>
@@ -26,10 +26,10 @@
     let attempts = 0;
     function checkAccess() {
       let inputVal = document.getElementById('accessKey').value;
-      if (inputVal === '20140118') {
+      if (inputVal === 'sampleadmin') {
         document.body.innerHTML = '<h1 style="color: darkgreen; font-weight: bold;">Successful access authentication</h1>';
         setTimeout(() => {
-          window.location.href = 'http://siru.nicepage.io/258012349876';
+          window.location.href = 'http://sharehtml.neocities.org/opensource';
         }, 2000);
       } else {
         attempts++;
