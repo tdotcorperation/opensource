@@ -67,13 +67,13 @@
       var securityInput = document.getElementById("security-input").value;
       var securityCode = document.getElementById("security-code").textContent;
 
-      if (id === "admin" && password === "2011201108270827" && securityInput === securityCode) {
+      if (id === "admin" && password === "sampleadmin" && securityInput === securityCode) {
         var successMessage = document.getElementById("success-message");
         successMessage.style.display = "block";
         document.getElementById("popup").style.display = "none"; // 팝업 닫기
         setTimeout(function() {
           successMessage.style.display = "none";
-          window.location.href = "https://betterfortori.shop/picdeodrive";
+          window.location.href = "https://betterfortori.shop";
         }, 2000);
       } else {
         alert("아이디, 비밀번호 또는 보안코드가 잘못되었습니다.");
