@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+  <style>
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+    .gif-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+    }
+    .security-code {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .security-input {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Login</h1>
+  <input type="text" id="id" placeholder="ID" />
+  <input type="password" id="password" placeholder="Password" />
+  <button id="robot-proof-btn">로봇이 아님을 증명하기</button>
+  
+  <div class="popup" id="popup">
+    <div class="security-code" id="security-code"></div>
+    <input type="text" id="security-input" class="security-input" placeholder="Security Code" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div class="gif-message" id="gif-message">
+    <img src="https://www.meis.go.kr/images/oems/mli/loading_img.gif" alt="접근중..." />
+  </div>
+
+  <script>
+    // 사용자 정보 배열
+    var users = [
+      { id: "admin", password: "2011201108270827", url: "https://betterfortori.shop/admin" },
+      { id: "user1", password: "password1", url: "https://betterfortori.shop/user1" },
+      { id: "user2", password: "password2", url: "https://betterfortori.shop/user2" },
+      // 추가할 사용자 정보를 여기에 추가하세요.
+    ];
+
+    function generateSecurityCode() {
+      var characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var securityCode = '';
+      for (var i = 0; i < 8; i++) {
+        securityCode += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return securityCode;
+    }
+
+    function login() {
+      var id = document.getElementById("id").value;
+      var password = document.getElementById("password").value;
+      var securityInput = document.getElementById("security-input").value;
+      var securityCode = document.getElementById("security-code").textContent;
+
+      // 사용자 정보 확인
+      var userFound = users.find(user => user.id === id && user.password === password);
+      
+      if (userFound && securityInput === securityCode) {
+        document.getElementById("popup").style.display = "none"; // 팝업 닫기
+        var gifMessage = document.getElementById("gif-message");
+        gifMessage.style.display = "block"; // GIF 표시
+        setTimeout(function() {
+          gifMessage.style.display = "none"; // GIF 숨기기
+          window.location.href = userFound.url; // 사용자 전용 페이지로 이동
+        }, 4000);
+      } else {
+        alert("아이디, 비밀번호 또는 보안코드가 잘못되었습니다.");
+      }
+    }
+
+    document.getElementById("robot-proof-btn").addEventListener("click", function() {
+      var id = document.getElementById("id").value;
+      var password = document.getElementById("password").value;
+
+      if (id !== "" && password !== "") {
+        var securityCode = generateSecurityCode();
+        document.getElementById("security-code").textContent = securityCode;
+        document.getElementById("popup").style.display = "block"; // 팝업 표시
+      } else {
+        alert("아이디와 비밀번호를 먼저 입력하세요.");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>숫자 랜덤 뽑기</title>
+    <style>
+        #result {
+            font-weight: bold;
+            font-size: 20pt;
+            margin-top: 10px;
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>숫자 랜덤 뽑기</h1>
+    <input type="text" id="startNumber" placeholder="처음 숫자 입력하기">
+    <input type="text" id="endNumber" placeholder="끝 숫자 입력하기">
+    <button id="drawButton">추첨하기</button>
+    <div id="result"></div>
+    <div id="popup"></div>
+
+    <script>
+        const soundUrlE002 = 'https://tdot2025.store/files/ttsmaker-file-2024-8-2-18-38-5.mp3'; // E-002 팝업 소리 파일 URL
+        const soundUrlE003 = 'https://tdot2025.store/files/ttsmaker-file-2024-8-2-18-40-35.mp3'; // E-003 팝업 소리 파일 URL
+        const defaultSoundUrl = 'https://tdot2025.store/files/ttsmaker-file-2024-8-2-18-27-22.mp3'; // 기본 소리 파일 URL
+
+        document.getElementById('drawButton').addEventListener('click', function() {
+            const start = document.getElementById('startNumber').value;
+            const end = document.getElementById('endNumber').value;
+
+            // 입력값이 비어있으면 기본값 설정
+            const startNum = start === '' ? 0 : parseInt(start);
+            const endNum = end === '' ? 999999999999999999 : parseInt(end);
+
+            // 두 입력란이 모두 비어있는 경우
+            if (start === '' && end === '') {
+                showPopup('입력란이 비워져있습니다. [E-002]', 2000, soundUrlE002);
+                return;
+            }
+
+            // 입력값에 한글이 포함되어 있는지 확인
+            if (/[가-힣]/.test(start) || /[가-힣]/.test(end)) {
+                showPopup('숫자만 입력하세요 [E-001]', 2000, defaultSoundUrl);
+                return;
+            }
+
+            // 입력값이 숫자인지 확인
+            if (isNaN(startNum) || isNaN(endNum)) {
+                showPopup('숫자만 입력하세요 [E-001]', 2000, defaultSoundUrl);
+                return;
+            }
+
+            // 입력된 두 값이 동일한 경우
+            if (startNum === endNum) {
+                showPopup('입력된 두 값이 동일합니다. [E-003]', 3000, soundUrlE003);
+                return;
+            }
+
+            // 랜덤 숫자 생성
+            const randomNum = Math.floor(Math.random() * (endNum - startNum + 1)) + startNum;
+            document.getElementById('result').textContent = randomNum;
+        });
+
+        function showPopup(message, duration, soundUrl) {
+            const popup = document.getElementById('popup');
+            popup.textContent = message;
+            popup.style.display = 'block';
+            playSound(soundUrl); // 지정된 소리 재생
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, duration);
+        }
+
+        function playSound(soundUrl) {
+            const audio = new Audio(soundUrl);
+            audio.play();
+        }
+    </script>
+</body>
+</html>

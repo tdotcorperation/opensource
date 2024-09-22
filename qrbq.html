@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>QR바코드메이커</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            font-size: 35pt;
+        }
+        #output {
+            margin-top: 20px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <script src="https://cdn.rawgit.com/lrsjng/jquery-barcode/master/jquery.barcode.min.js"></script>
+</head>
+<body>
+
+<h1>QR바코드메이커</h1>
+<p>링크를 넣어주세요!</p>
+<input type="text" id="linkInput" placeholder="링크 입력">
+<button id="createButton">제작</button>
+
+<div id="output"></div>
+
+<script>
+    $('#createButton').click(function() {
+        const link = $('#linkInput').val();
+        $('#output').empty();
+
+        if (link) {
+            // QR 코드 버튼
+            $('#output').append('<button id="qrButton">QR 코드</button>');
+            // 바코드 버튼
+            $('#output').append('<button id="barcodeButton">바코드</button>');
+            
+            // QR 코드 생성
+            $('#qrButton').click(function() {
+                $('#output').append('<div id="qrCode"></div>');
+                $('#qrCode').empty().qrcode(link);
+                $('#output').append('<button class="download" data-type="qr">투명 PNG</button>');
+                $('#output').append('<button class="download" data-type="qr-jpeg">JPEG</button>');
+            });
+
+            // 바코드 생성
+            $('#barcodeButton').click(function() {
+                $('#output').append('<div id="barcode"></div>');
+                $('#barcode').empty().barcode(link, "code128");
+                $('#output').append('<button class="download" data-type="barcode">투명 PNG</button>');
+                $('#output').append('<button class="download" data-type="barcode-jpeg">JPEG</button>');
+            });
+
+            // 다운로드 처리
+            $('.download').click(function() {
+                const type = $(this).data('type');
+                let canvas;
+
+                if (type.startsWith('qr')) {
+                    canvas = document.querySelector('#qrCode canvas');
+                } else {
+                    canvas = document.querySelector('#barcode canvas');
+                }
+
+                if (canvas) {
+                    const link = document.createElement('a');
+                    if (type.includes('jpeg')) {
+                        link.download = type.startsWith('qr') ? 'qrcode.jpeg' : 'barcode.jpeg';
+                        link.href = canvas.toDataURL('image/jpeg');
+                    } else {
+                        link.download = type.startsWith('qr') ? 'qrcode.png' : 'barcode.png';
+                        link.href = canvas.toDataURL('image/png');
+                    }
+                    link.click();
+                }
+            });
+        } else {
+            alert('링크를 입력해주세요!');
+        }
+    });
+</script>
+
+</body>
+</html>

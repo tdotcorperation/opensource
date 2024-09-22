@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+  <style>
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+    .success-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #00cc66;
+      color: white;
+      padding: 20px;
+      font-weight: bold;
+      text-align: center;
+      z-index: 9999;
+    }
+    .security-code {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .security-input {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Login</h1>
+  <input type="text" id="id" placeholder="ID" />
+  <input type="password" id="password" placeholder="Password" />
+  <button id="robot-proof-btn">로봇이 아님을 증명하기</button>
+  
+  <div class="popup" id="popup">
+    <div class="security-code" id="security-code"></div>
+    <input type="text" id="security-input" class="security-input" placeholder="Security Code" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div class="success-message" id="success-message"><b>접근중...</b></div>
+
+  <script>
+    function generateSecurityCode() {
+      var characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var securityCode = '';
+      for (var i = 0; i < 8; i++) {
+        securityCode += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return securityCode;
+    }
+
+    function login() {
+      var id = document.getElementById("id").value;
+      var password = document.getElementById("password").value;
+      var securityInput = document.getElementById("security-input").value;
+      var securityCode = document.getElementById("security-code").textContent;
+
+      if (id === "admin" && password === "2011201108270827" && securityInput === securityCode) {
+        var successMessage = document.getElementById("success-message");
+        successMessage.style.display = "block";
+        document.getElementById("popup").style.display = "none"; // 팝업 닫기
+        setTimeout(function() {
+          successMessage.style.display = "none";
+          window.location.href = "https://betterfortori.shop/picdeodrive";
+        }, 2000);
+      } else {
+        alert("아이디, 비밀번호 또는 보안코드가 잘못되었습니다.");
+      }
+    }
+
+    document.getElementById("robot-proof-btn").addEventListener("click", function() {
+      var id = document.getElementById("id").value;
+      var password = document.getElementById("password").value;
+
+      if (id !== "" && password !== "") {
+        var securityCode = generateSecurityCode();
+        document.getElementById("security-code").textContent = securityCode;
+        document.getElementById("popup").style.display = "block"; // 팝업 표시
+      } else {
+        alert("아이디와 비밀번호를 먼저 입력하세요.");
+      }
+    });
+  </script>
+</body>
+</html>

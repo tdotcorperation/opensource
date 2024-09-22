@@ -1,0 +1,47 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SiRU Secure acs</title>
+  <style>
+    h1 {
+      font-size: 40pt;
+    }
+    input {
+      width: 200px;
+      height: 30px;
+    }
+    button {
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>SiRU Secure Access Key Authentication System</h1>
+  <div>
+    <input type="text" id="accessKey">
+    <button onclick="checkAccess()">Access</button>
+  </div>
+  <script>
+    let attempts = 0;
+    function checkAccess() {
+      let inputVal = document.getElementById('accessKey').value;
+      if (inputVal === '20140118') {
+        document.body.innerHTML = '<h1 style="color: darkgreen; font-weight: bold;">Successful access authentication</h1>';
+        setTimeout(() => {
+          window.location.href = 'http://siru.nicepage.io/258012349876';
+        }, 2000);
+      } else {
+        attempts++;
+        if (attempts === 3) {
+          document.querySelector('div').style.display = 'none';
+          document.body.innerHTML += '<h2 style="font-size: 15pt; color: red;">Access is blocked.</h2>';
+        } else {
+          document.body.innerHTML += '<h2 style="font-size: 20pt; color: darkred; font-weight: bold;">Wrong PW</h2>';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
+```

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>본인 인증</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: white;
+            z-index: 1000;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="showPopup()">휴대폰 정보인증</button>
+
+<div class="popup" id="popup">
+    <h2>휴대폰 정보인증</h2>
+    <label for="name">이름:</label>
+    <input type="text" id="name"><br><br>
+    
+    <label for="phone">휴대폰 번호:</label>
+    <input type="text" id="phone"><br><br>
+    
+    <label for="rrn1">주민등록번호 앞 6자리:</label>
+    <input type="text" id="rrn1" maxlength="6"><br><br>
+    
+    <label for="rrn2">주민등록번호 뒤 1자리:</label>
+    <input type="text" id="rrn2" maxlength="1"><br><br>
+    
+    <button onclick="validateRRN()">확인</button>
+    <p id="message" class="error"></p>
+</div>
+
+<script>
+function showPopup() {
+    document.getElementById('popup').style.display = 'block';
+}
+
+function validateRRN() {
+    const rrn1 = document.getElementById('rrn1').value;
+    const rrn2 = document.getElementById('rrn2').value;
+    const message = document.getElementById('message');
+
+    if (rrn1.length !== 6 || rrn2.length !== 1) {
+        message.textContent = '올바르지 않는 번호입니다. 30초 후 재입력하세요.';
+        lockInput();
+        return;
+    }
+
+    const firstTwoDigits = parseInt(rrn1.substring(0, 2), 10);
+    const lastDigit = parseInt(rrn2, 10);
+
+    // 첫 두 자리에 따른 조건 검증
+    if (firstTwoDigits >= 0 && firstTwoDigits <= 30) {
+        if (lastDigit !== 3 && lastDigit !== 4) {
+            message.textContent = '올바르지 않는 번호입니다. 30초 후 재입력하세요.';
+            lockInput();
+            return;
+        }
+    } else if (firstTwoDigits >= 31 && firstTwoDigits <= 99) {
+        if (lastDigit !== 1 && lastDigit !== 2) {
+            message.textContent = '올바르지 않는 번호입니다. 30초 후 재입력하세요.';
+            lockInput();
+            return;
+        }
+    } else {
+        message.textContent = '올바르지 않는 번호입니다. 30초 후 재입력하세요.';
+        lockInput();
+        return;
+    }
+
+    message.textContent = '인증 완료!';
+    setTimeout(() => {
+        window.location.href = 'https://tdrive.store';
+    }, 1000); // 1초 후에 이동
+}
+
+function lockInput() {
+    setTimeout(() => {
+        document.getElementById('name').disabled = false;
+        document.getElementById('phone').disabled = false;
+        document.getElementById('rrn1').disabled = false;
+        document.getElementById('rrn2').disabled = false;
+        document.getElementById('message').textContent = '';
+    }, 30000);
+
+    document.getElementById('name').disabled = true;
+    document.getElementById('phone').disabled = true;
+    document.getElementById('rrn1').disabled = true;
+    document.getElementById('rrn2').disabled = true;
+}
+</script>
+
+</body>
+</html>
